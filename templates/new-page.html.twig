@@ -8,6 +8,7 @@
     <h1>Редактор статьи</h1>
     {{ form_start(form, {'method': 'POST'}) }}
     {{ form_end(form) }}
+    <input type="file" id="file" name="file"></input>
     <hr>
     <div>
         <button id="save">Сохранить</button>
@@ -19,6 +20,28 @@
     <script>
         $('#save').on('click', () => {
             $('form').submit();
+        });
+        
+        $('#load-file').on('click', () => {
+            let data = new FormData();
+            data.append('file', $('#file')[0].files[0]);
+
+            $.ajax({
+                url: '/upload',
+                data: data,
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    alert(data);
+                    $('#file').val(null);
+                },
+                error: function () {
+                    alert('Произошла ошибка');
+                    $('#file').val(null);
+                }
+            });
+
         });
     </script>
 {% endblock %}

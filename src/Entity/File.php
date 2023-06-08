@@ -22,9 +22,8 @@ class File
     #[ORM\Column(type: Types::STRING, length:255)]
     private string $path;
 
-    /**
-     * @Assert\File(maxSize="10m")
-     */
+
+    #[Assert\File(maxSize="10m")]
     private $file;
 
     private string $dirStructure;

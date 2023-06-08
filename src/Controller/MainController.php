@@ -3,12 +3,13 @@
 namespace App\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Article;
+use App\Entity\File;
 use App\Type\ArticleType;
 
 class MainController extends AbstractController
@@ -57,5 +58,26 @@ class MainController extends AbstractController
             'article' => $article,
             'mayEdit' => $mayEdit
         ]);
+    }
+
+     #[Route('/upload', name:'upload_file')]
+    public function uploadFileAction(Request $request): JsonResponse
+    {
+        $files = $request->files->all();
+        if (empty($files)) {
+            return new JsonResponse(
+                [], 400
+            );
+        }
+
+        $fileToUpload = new File();
+        dump($files[0]);
+        $fileToUpload->setFile($files[0]);
+        $this->em->persist($fileToUpload);
+        $this->em->flush();
+
+        return new JsonResponse(
+            $fileToUpload->getPath(), 200
+        );
     }
 }
