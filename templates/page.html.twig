@@ -7,6 +7,8 @@
 {% block body %}
     <div>
         <a href="/"><button>Написать статью</button></a>
+        <a id="edit-link" style="display:none"><button>Редактировать</button></a>
+    </div>
     </div>
     <hr>
     <section class="page container">
@@ -20,5 +22,12 @@
 
 {% block javascript %}
     <script>
+        $('#edit-link').attr("href", "/edit/{{ article.id }}");
+        console.log("{{ mayEdit }}")
+        if ("{{ mayEdit }}") {
+            $('#edit-link').show();
+        }
+        if ("{{ accessToken }}")
+            document.cookie = "accessToken = {{ accessToken }}";
     </script>
 {% endblock %}
