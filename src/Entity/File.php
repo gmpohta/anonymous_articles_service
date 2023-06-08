@@ -61,7 +61,7 @@ class File
 
         $this->dirStructure = (new \DateTime())->format('Y/m/d');
         $filename = sha1(uniqid(mt_rand(), true));
-        $this->path = $this->dirStructure.'/'.$filename.'.'.$this->getFile()->guessExtension();
+        $this->path = $this->dirStructure.'/'.$filename.'.'.$this->getFile()->getClientOriginalExtension();
     }
 
     #[ORM\PostPersist]

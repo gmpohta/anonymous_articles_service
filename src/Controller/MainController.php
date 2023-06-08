@@ -63,7 +63,8 @@ class MainController extends AbstractController
      #[Route('/upload', name:'upload_file')]
     public function uploadFileAction(Request $request): JsonResponse
     {
-        $files = $request->files->all();
+        $files = array_values($request->files->all());
+        
         if (empty($files)) {
             return new JsonResponse(
                 [], 400
@@ -71,13 +72,13 @@ class MainController extends AbstractController
         }
 
         $fileToUpload = new File();
-        dump($files[0]);
+
         $fileToUpload->setFile($files[0]);
         $this->em->persist($fileToUpload);
         $this->em->flush();
 
         return new JsonResponse(
-            $fileToUpload->getPath(), 200
+            $fileToUpload->getWebPath(), 200
         );
     }
 }
