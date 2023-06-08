@@ -1,6 +1,6 @@
 <?php
 
-namespace Irmag\SiteBundle\Entity;
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,7 +23,7 @@ class File
     private string $path;
 
 
-    #[Assert\File(maxSize="10m")]
+    #[Assert\File(maxSize:"10m")]
     private $file;
 
     private string $dirStructure;
