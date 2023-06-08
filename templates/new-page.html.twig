@@ -12,12 +12,18 @@
     <hr>
     <div>
         <button id="save">Сохранить</button>
-        <button id="load-file">Загрузить файл</button>
+        <button id="load-file" disabled>Загрузить файл</button>
     </div>
 {% endblock %}
 
 {% block javascript %}
     <script>
+        $('#file').change(function (){
+            if ($('#file')[0].files[0]) {
+                $('#load-file').prop('disabled', false);
+            }
+        })
+
         $('#save').on('click', () => {
             $('form').submit();
         });
@@ -33,12 +39,14 @@
                 processData: false,
                 contentType: false,
                 success: function (data) {
-                    alert(data);
+                    alert('Используйте эту ссылку в статье, чтобы вставить файл: '+data);
                     $('#file').val(null);
+                    $('#load-file').prop('disabled', true);
                 },
                 error: function () {
                     alert('Произошла ошибка');
                     $('#file').val(null);
+                    $('#load-file').prop('disabled', true);
                 }
             });
 
