@@ -1,0 +1,24 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+    Редактор статьи
+{% endblock %}
+
+{% block body %}
+    <h1>Редактор статьи</h1>
+    {{ form_start(form, {'method': 'POST'}) }}
+    {{ form_end(form) }}
+    <hr>
+    <div>
+        <button id="save">Сохранить</button>
+        <button id="load-file">Загрузить файл</button>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $('#save').on('click', () => {
+            $('form').submit();
+        });
+    </script>
+{% endblock %}
