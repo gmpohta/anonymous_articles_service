@@ -23,7 +23,6 @@
 {% block javascript %}
     <script>
         $('#edit-link').attr("href", "/edit/{{ article.id }}");
-        console.log("{{ mayEdit }}")
         if ("{{ mayEdit }}") {
             $('#edit-link').show();
         }

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Cookie;
 use App\Entity\Article;
 use App\Entity\File;
 use App\Type\ArticleType;
@@ -94,6 +95,7 @@ class MainController extends AbstractController
     {
         $session = $request->getSession();
         $accessToken = $session->getFlashBag()->get('accessToken');
+        $accessToken = $accessToken ? $accessToken[0] : null;
         
         $mayEdit = false;
 
@@ -105,6 +107,20 @@ class MainController extends AbstractController
 
         if (
             $request->cookies->get('accessToken') && 
+            $idFromToken == $id &&
+            $isValid
+        ) {
+            $mayEdit = true;
+        }
+        
+        if ($accessToken) {
+            $decodedJWT = $this->isJwtValid($accessToken, $secret = 'secret');        
+            $idFromToken = $decodedJWT['payload']['id'];
+            $isValid = $decodedJWT['isValid'];
+        }
+        
+        if (
+            $accessToken && 
             $idFromToken == $id &&
             $isValid
         ) {
@@ -122,7 +138,7 @@ class MainController extends AbstractController
         return $this->render('page.html.twig', [
             'article' => $article,
             'mayEdit' => $mayEdit,
-            'accessToken' => $accessToken ? $accessToken[0] : null,
+            'accessToken' => $accessToken,
         ]);
     }
 
